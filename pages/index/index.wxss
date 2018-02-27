@@ -1,0 +1,46 @@
+/**index.wxss**/
+/* page {
+  height:100%;
+  top:0;
+} */
+
+.bg {
+  background:#eee;
+  height:700rpx;
+}
+
+canvas {
+  top:50rpx;
+  left:70rpx;
+  position: absolute;
+  background: white;
+} 
+
+.flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top:50rpx;
+  left:70rpx;
+  height:600rpx;
+  width:610rpx;
+  position: absolute;
+}
+
+.dn {
+  display: none !important;
+}
+
+.chooseBtn {
+  width:400rpx;
+}
+
+.flex-btn {
+  width:610rpx;
+  height:400rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  left:70rpx; 
+  position:absolute;
+}

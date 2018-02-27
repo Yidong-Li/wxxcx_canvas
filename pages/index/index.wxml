@@ -1,0 +1,12 @@
+<!--index.wxml-->
+<view class="bg">
+  <canvas canvas-id="mycanvas" class="mycanvas" id="myCanvas" style="width:610rpx;height:600rpx"></canvas>
+  <view class="flex {{ dn?'dn':''}}">
+      <button class="chooseBtn" bindtap="chooseImage">请选择一张照片</button>
+  </view> 
+</view>
+<view class="flex-btn {{ dnBtn?'dn':'' }}">
+  <button bindtap="reverseColor">反色</button>
+  <button bindtap="blackWhite">黑白</button>
+  <button bindtap='recover'>原图</button>
+</view>
