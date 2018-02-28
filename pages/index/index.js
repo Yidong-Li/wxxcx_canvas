@@ -2,6 +2,8 @@
 //获取应用实例
 const app = getApp();
 const ctx = wx.createCanvasContext('mycanvas');
+const API = require('../../utils/api.js')
+
 var orignalData = [];
 Page({
   data: {
@@ -41,6 +43,35 @@ Page({
         that.setData({
           dn:true
         });
+        // API.getImageInfo({ src: res.tempFilePaths[0]}).then(t=>{
+        //   var newSize = that.resizeImage(t.width, t.height, that.data.canvasWidth, that.data.canvasHeight);
+        //   that.setData({
+        //     newSize: newSize
+        //   });
+        //   var offsetLeft, offsetTop;
+        //   offsetLeft = (that.data.canvasWidth - newSize.width) / 2;
+        //   offsetTop = (that.data.canvasHeight - newSize.height) / 2;
+        //   that.setData({
+        //     offsetLeft: offsetLeft,
+        //     offsetTop: offsetTop
+        //   });
+        //   ctx.drawImage(res.tempFilePaths[0], offsetLeft, offsetTop, newSize.width, newSize.height);
+        //   ctx.draw(false, () => {
+        //     that.setData({
+        //       dnBtn: false
+        //     });
+        //     API.canvasGetImageData({
+        //       canvasId: 'mycanvas',
+        //       x: that.data.offsetLeft,
+        //       y: that.data.offsetTop,
+        //       width: that.data.newSize.width,
+        //       height: that.data.newSize.height
+        //     }).then(r=>{
+        //       orignalData = r.data
+        //     })
+        //   });
+        // })
+      
         wx.getImageInfo({
           src: res.tempFilePaths[0],
           success: function (t) {
@@ -120,48 +151,85 @@ Page({
 
   reverseColor: function(){
     var that = this;
-    wx.canvasGetImageData({
+    API.canvasGetImageData({
       canvasId: 'mycanvas',
       x: that.data.offsetLeft,
       y: that.data.offsetTop,
       width: that.data.newSize.width,
-      height: that.data.newSize.height,
-      success(r) {
-        var newImageData = [];
-        for (var i in r.data) {
-          if (i % 4 != 3) {
-            newImageData[i] = 255 - r.data[i];
-          }
-          else {
-            newImageData[i] = 255;
-          }
+      height: that.data.newSize.height
+    }).then(r=>{
+      var newImageData = [];
+      for (var i in r.data) {
+        if (i % 4 != 3) {
+          newImageData[i] = 255 - r.data[i];
         }
-        that.putImageData(newImageData);
+        else {
+          newImageData[i] = 255;
+        }
       }
+      that.putImageData(newImageData);
     })
+    // wx.canvasGetImageData({
+    //   canvasId: 'mycanvas',
+    //   x: that.data.offsetLeft,
+    //   y: that.data.offsetTop,
+    //   width: that.data.newSize.width,
+    //   height: that.data.newSize.height,
+    //   success(r) {
+    //     var newImageData = [];
+    //     for (var i in r.data) {
+    //       if (i % 4 != 3) {
+    //         newImageData[i] = 255 - r.data[i];
+    //       }
+    //       else {
+    //         newImageData[i] = 255;
+    //       }
+    //     }
+    //     that.putImageData(newImageData);
+    //   }
+    // })
   },
 
   blackWhite: function(){
     var that = this;
-    wx.canvasGetImageData({
+    API.canvasGetImageData({
       canvasId: 'mycanvas',
       x: that.data.offsetLeft,
       y: that.data.offsetTop,
       width: that.data.newSize.width,
-      height: that.data.newSize.height,
-      success(r) {
-        var newImageData = [];
-        var imageData = r.data;
-        for (var i=0;i <= imageData.length - 4;i += 4) {
-          var average = (imageData[i] + imageData[i + 1] + imageData[i + 2]) / 3;
-          newImageData[i] = average;
-          newImageData[i + 1] = average;
-          newImageData[i + 2] = average;  
-          newImageData[i + 3] = 255;
-        }
-        that.putImageData(newImageData);
+      height: that.data.newSize.height
+    }).then(r=>{
+      var newImageData = [];
+      var imageData = r.data;
+      for (var i = 0; i <= imageData.length - 4; i += 4) {
+        var average = (imageData[i] + imageData[i + 1] + imageData[i + 2]) / 3;
+        newImageData[i] = average;
+        newImageData[i + 1] = average;
+        newImageData[i + 2] = average;
+        newImageData[i + 3] = 255;
       }
+      that.putImageData(newImageData);
     })
+
+    // wx.canvasGetImageData({
+    //   canvasId: 'mycanvas',
+    //   x: that.data.offsetLeft,
+    //   y: that.data.offsetTop,
+    //   width: that.data.newSize.width,
+    //   height: that.data.newSize.height,
+    //   success(r) {
+    //     var newImageData = [];
+    //     var imageData = r.data;
+    //     for (var i=0;i <= imageData.length - 4;i += 4) {
+    //       var average = (imageData[i] + imageData[i + 1] + imageData[i + 2]) / 3;
+    //       newImageData[i] = average;
+    //       newImageData[i + 1] = average;
+    //       newImageData[i + 2] = average;  
+    //       newImageData[i + 3] = 255;
+    //     }
+    //     that.putImageData(newImageData);
+    //   }
+    // })
   },
 
   recover:function(){
